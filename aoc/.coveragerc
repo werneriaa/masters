@@ -1,0 +1,9 @@
+[report]
+omit =
+    tests/*
+    */__init__.py
+
+exclude_lines =
+    # Enable the shorter 'nocover' pragma, must specify the original too
+    pragma: no cover
+    nocover
