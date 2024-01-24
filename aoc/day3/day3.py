@@ -3,11 +3,13 @@ import sys
 import os
 from operator import mul
 
-def get_input_path(filename): # nocover
+
+def get_input_path(filename):  # nocover
     current_dir = os.path.dirname(__file__)
     return os.path.join(current_dir, '..', 'inputs', filename)
 
-def read_input(day, test=False): # nocover
+
+def read_input(day, test=False):  # nocover
     try:
         filename = f'test_day_{day}_part1.txt' if test else f'day{day}.txt'
         file = get_input_path(filename)
@@ -19,18 +21,19 @@ def read_input(day, test=False): # nocover
         print(e)
         sys.exit(1)
 
+
 engine = read_input(3, True)
 
-def part1(engine):
 
+def part1(engine):
     symbol_regex = r'[^.\d]'
     symbol_adjacent = set()
     for row, line in enumerate(engine):
         for m in re.finditer(symbol_regex, line):
             col = m.start()
-            for r in range(row-1, row+2):
-                for c in range(col-1, col+2):  
-                  symbol_adjacent.add((r, c))
+            for r in range(row - 1, row + 2):
+                for c in range(col - 1, col + 2):
+                    symbol_adjacent.add((r, c))
 
     number_regex = r'\d+'
 
@@ -62,8 +65,8 @@ def part2(engine):
     number_regex = r'\d+'
     for i, line in enumerate(engine):
         for m in re.finditer(number_regex, line):
-            for r in range(i-1, i+2):
-                for c in range(m.start()-1, m.end()+1):
+            for r in range(i - 1, i + 2):
+                for c in range(m.start() - 1, m.end() + 1):
                     if (r, c) in gears:
                         gears[(r, c)].append(int(m.group()))
 
@@ -73,7 +76,6 @@ def part2(engine):
             gear_ratio_sum += mul(*nums)
 
     return gear_ratio_sum
-
 
 
 # print('Part 1:', part1(engine))
