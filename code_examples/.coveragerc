@@ -1,6 +1,9 @@
 [report]
 omit =
     tests/*
+    generated_tests/*
+    generated_tests_2/*
+    final_tests/*
     */__init__.py
 
 exclude_lines =

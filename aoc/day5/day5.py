@@ -97,8 +97,14 @@ def find_smallest_location(seeds, ranges):
 
 
 # smallest = find_smallest_location(seeds, ranges)
-
 # print(smallest)
+
+
+def part_1(input):
+    data_sections = input.split("\n\n")
+    seeds = get_seeds(data_sections)
+    ranges = process_all_ranges(data_sections)
+    return find_smallest_location(seeds, ranges)
 
 
 def map_to_prev(dest, r):
@@ -148,11 +154,9 @@ def calculate_locations(ranges, data_sections):
     return all_locations, seed_ranges
 
 
-def get_lowest_location(all_locations, seed_ranges):
-    print(len(all_locations))
+def get_lowest_location(all_locations, seed_ranges, ranges):
     for location in all_locations:
         seed = find_seed(location, ranges[-1::-1])
-        print(seed)
         if is_valid_seed(seed, seed_ranges):
             print(f'Found {seed=} at {location=}')
             return location
@@ -160,6 +164,14 @@ def get_lowest_location(all_locations, seed_ranges):
 
 # all_locations, seed_ranges = calculate_locations(ranges, data_sections)
 
-# lowest_location = get_lowest_location(all_locations, seed_ranges)
+# lowest_location = get_lowest_location(all_locations, seed_ranges, ranges)
+
+
+def part_2(input):
+    data_sections = input.split("\n\n")
+    ranges = process_all_ranges(data_sections)
+    all_locations, seed_ranges = calculate_locations(ranges, data_sections)
+    return get_lowest_location(all_locations, seed_ranges, ranges)
+
 
 # print(lowest_location)

@@ -41,11 +41,6 @@ def find_median_sorted_arrays(nums1, nums2):
                 return max(l1, l2)
             else:
                 return (max(l1, l2) + min(r1, r2)) / 2.0
-        elif l1 > r2:
-            # Move towards the left side of nums1
-            high = mid1 - 1
         else:
             # Move towards the right side of nums1
             low = mid1 + 1
-
-    return 0  # If the code reaches here, the input arrays were not sorted.

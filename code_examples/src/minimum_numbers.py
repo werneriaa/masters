@@ -1,4 +1,5 @@
 # https://leetcode.com/problems/sum-of-numbers-with-units-digit-k/
+# Solution: https://leetcode.com/problems/sum-of-numbers-with-units-digit-k/solutions/2168262/python-math-solution-only-looking-at-unit-digit-clean-concise/
 # Grade: Medium
 def minimum_numbers(num: int, k: int) -> int:
     if num == 0:

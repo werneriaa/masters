@@ -51,6 +51,12 @@ def calculate_points(parsed_data):
     return total_points
 
 
+def part_1(input):
+    data = input.split("\n")
+    parsed_data = transform_data(data)
+    return calculate_points(parsed_data)
+
+
 def process_cards(parsed_data):
     counts = {card_id: 1 for card_id, _ in parsed_data}
     for card_id, (winning, our) in parsed_data:
@@ -62,6 +68,12 @@ def process_cards(parsed_data):
                 counts[i] += 1
     total = sum(c for c in counts.values())
     return total
+
+
+def part_2(input):
+    data = input.split("\n")
+    parsed_data = transform_data(data)
+    return process_cards(parsed_data)
 
 
 # part_2 = process_cards(parsed_data) #nocover

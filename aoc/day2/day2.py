@@ -3,6 +3,8 @@ from collections import namedtuple
 import sys
 import os
 
+# Had to modify the code little bit suitable for the test
+
 
 def get_input_path(filename):  # nocover
     current_dir = os.path.dirname(__file__)
@@ -66,6 +68,11 @@ def validate(games):
     return sum(game.id for game in valid_games)
 
 
+def solve_day_2_part_1(input):
+    games = [parse_game_input(line) for line in input]
+    return validate(games)
+
+
 # part_1 = validate(games)
 # print(f'Solution: {part_1}')
 
@@ -79,6 +86,11 @@ def calculate_power(game):
 
 def calculate_total_power(games):
     return sum(calculate_power(game) for game in games)
+
+
+def solve_day_2_part_2(input):
+    games = [parse_game_input(line) for line in input]
+    return calculate_total_power(games)
 
 
 # part_2 = calculate_total_power(games)

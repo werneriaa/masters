@@ -22,7 +22,7 @@ def read_input(day, test=False):  # nocover
         sys.exit(1)
 
 
-engine = read_input(3, True)
+# engine = read_input(3, True)
 
 
 def part1(engine):

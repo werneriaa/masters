@@ -1,12 +1,15 @@
 from typing import List
 
 # https://leetcode.com/problems/two-sum/description/
-# Grade Easy
+# Grade: Easy
+# Solution: https://leetcode.com/problems/two-sum/solutions/4856661/video-visualization-using-a-hash-map/
+
 
 def two_sum(nums: List[int], target: int) -> List[int]:
-  hash_table = {}
-  for i in range(len(nums)):
-    if nums[i] in hash_table:
-      return [hash_table[nums[i]], i]
-    else:
-      hash_table[target - nums[i]] = i
+    seen = {}
+    for i in range(len(nums)):
+        diff = target - nums[i]
+        if diff in seen:
+            return [seen[diff], i]
+        else:
+            seen[nums[i]] = i

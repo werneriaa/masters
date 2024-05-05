@@ -1,50 +1,59 @@
-import string
-
+import itertools
 
 # https://leetcode.com/problems/strong-password-checker/description/
 # Grade: Hard
+# Solution: https://leetcode.com/problems/strong-password-checker/solutions/615417/a-readable-solution-in-python/
+
+lowercase = set('abcdefghijklmnopqrstuvwxyz')
+uppercase = set('ABCDEFGHIJKLMNOPQRSTUFVWXYZ')
+digit = set('0123456789')
+
+
 def strong_password_checker(s: str):
-    lowercase = set(string.ascii_lowercase)
-    uppercase = set(string.ascii_uppercase)
-    digits = set([str(elem) for elem in range(10)])
+    characters = set(s)
 
-    num_deletions = max(0, len(s) - 20)
+    # Check rule (2)
+    needs_lowercase = not (characters & lowercase)
+    needs_uppercase = not (characters & uppercase)
+    needs_digit = not (characters & digit)
+    num_required_type_replaces = int(needs_lowercase + needs_uppercase + needs_digit)
 
-    has_lowercase = any([character in lowercase for character in s])
-    has_uppercase = any([character in uppercase for character in s])
-    has_digits = any([character in digits for character in s])
-    num_missing_types = (not has_lowercase) + (not has_uppercase) + (not has_digits)
+    # Check rule (1)
+    num_required_inserts = max(0, 6 - len(s))
+    num_required_deletes = max(0, len(s) - 20)
 
-    substring_lengths = count_substring_lengths(s)
-    break_substrings_with_deletions(substring_lengths, num_deletions)
-    num_substring_breaks = sum(
-        [length // 3 for length in substring_lengths if length >= 3]
-    )
+    # Check rule (3)
+    # Convert s to a list of repetitions for us to manipulate
+    # For s = '11aaabB' we have groups = [2, 3, 1, 1]
+    groups = [len(list(grp)) for _, grp in itertools.groupby(s)]
 
-    num_insertions = max(0, 6 - len(s))
-
-    return num_deletions + max(num_missing_types, num_substring_breaks, num_insertions)
-
-
-def count_substring_lengths(s: str):
-    # "aaabbc" => [3, 2, 1]
-    result = [1]
-    last_seen_character = s[0]
-    for idx in range(1, len(s)):
-        if s[idx] == last_seen_character:
-            result[-1] += 1
-        else:
-            result.append(1)
-        last_seen_character = s[idx]
-    return result
-
-
-def break_substrings_with_deletions(substring_lengths: int, num_deletions: int):
-    while num_deletions > 0:
-        best_tuple_to_delete = min(
-            enumerate(substring_lengths),
-            key=lambda pair: pair[1] % 3 if pair[1] >= 3 else float("inf"),
+    # We apply deletions iteratively and always choose the best one.
+    # This should be fine for short passwords :)
+    # A delete is better the closer it gets us to removing a group of three.
+    # Thus, a group needs to be (a) larger than 3 and (b) minimal wrt modulo 3.
+    def apply_best_delete():
+        argmin, _ = min(
+            enumerate(groups),
+            # Ignore groups of length < 3 as long as others are available.
+            key=lambda it: it[1] % 3 if it[1] >= 3 else 10 - it[1],
         )
-        best_idx_to_delete = best_tuple_to_delete[0]
-        substring_lengths[best_idx_to_delete] -= 1
-        num_deletions -= 1
+        groups[argmin] -= 1
+
+    for _ in range(num_required_deletes):
+        apply_best_delete()
+
+    # On the finished groups, we need one repace per 3 consecutive letters.
+    num_required_group_replaces = sum(group // 3 for group in groups)
+
+    return (
+        # Deletes need to be done anyway
+        num_required_deletes
+        # Type replaces can be eaten up by inserts or group replaces.
+        # Note that because of the interplay of rules (1) and (2), the required number of group replaces
+        # can never be greater than the number of type replaces and inserts for candidates of length < 6.
+        + max(
+            num_required_type_replaces,
+            num_required_group_replaces,
+            num_required_inserts,
+        )
+    )

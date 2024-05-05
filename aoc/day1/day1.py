@@ -21,30 +21,56 @@ def convert_to_int(val):
         return str_to_num[val]
 
 
-def part1(file: str) -> int:
-    with open(file, 'r') as file:
-        lines = file.readlines()
-        result = 0
-        for line in lines:
-            nums = re.findall(r'(\d)', line)
+def sum_calibration_values(lines):
+    result = 0
+    for line in lines:
+        nums = re.findall(r'(\d)', line)
+        if len(nums) > 0:
             res = int(f"{(nums[0])}{(nums[-1])}")
             result += res
 
-        return result
+    return result
 
 
-def part2(file: str) -> int:
-    with open(file, 'r') as file:
-        lines = file.readlines()
-        result = 0
-        for line in lines:
-            nums = re.findall(
-                r'(?=(\d|one|two|three|four|five|six|seven|eight|nine))', line
-            )
-            res = int(f"{convert_to_int(nums[0])}{convert_to_int(nums[-1])}")
-            result += res
+# def part1(file: str) -> int:  # nocover
+#     with open(file, 'r') as file:
+#         lines = file.readlines()
+#         result = sum_calibration_values(lines)
+#         return result
 
-        return result
+
+def sum_calibration_values_part2(lines):
+    result = 0
+    for line in lines:
+        nums = re.findall(
+            r'(?=(\d|one|two|three|four|five|six|seven|eight|nine))', line
+        )
+        res = int(f"{convert_to_int(nums[0])}{convert_to_int(nums[-1])}")
+        result += res
+
+    return result
+
+
+# def sum_calibration_values_part2_broken(lines):  # nocover
+#     result = 0
+#     for line in lines:
+#         try:
+#             nums = re.findall(r'(?=(\d|one|two|three|four|six|seven|eight|nine))', line)
+#             if len(nums) < 0:
+#                 continue
+#             res = int(f"{convert_to_int(nums[0])}{convert_to_int(nums[-1])}")
+#             result += res
+#         except IndexError:
+#             continue
+
+#     return result
+
+
+# def part2(file: str) -> int:  # nocover
+#     with open(file, 'r') as file:
+#         lines = file.readlines()
+#         result = sum_calibration_values_part2(lines)
+#         return result
 
 
 def get_input_path(filename):  # nocover
@@ -52,5 +78,5 @@ def get_input_path(filename):  # nocover
     return os.path.join(current_dir, '..', 'inputs', filename)
 
 
-# print(part1(get_input_path("day1.txt")))
+# print(part1(get_input_path("test_part1_2.txt")))
 # print(part2(get_input_path("day1.txt")))
